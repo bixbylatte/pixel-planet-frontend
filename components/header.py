@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 def render_header():
     """
-    Renders the Pixelcast header component with logo and subtitle using Tailwind CSS
+    Renders the PixelCast header component with logo and subtitle using Tailwind CSS
     Similar to a React component: <Header />
     """
 
@@ -22,10 +22,10 @@ def render_header():
                     🌍
                 </div>
                 <h1 class="text-2xl font-semibold text-gray-800 m-0 leading-none">
-                    Pixelcast
+                    PixelCast
                 </h1>
                 <p class="text-sm text-gray-600 m-0 ml-4 pl-4 border-l border-gray-300">
-                    Powered by NASA POWER
+                    Powered by NASA Open Dataset
                 </p>
             </div>
         </div>

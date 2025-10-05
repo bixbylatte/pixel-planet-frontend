@@ -21,7 +21,7 @@ class Config:
 
     # App Configuration
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"
-    PAGE_TITLE = os.getenv("PAGE_TITLE", "Pixelcast")
+    PAGE_TITLE = os.getenv("PAGE_TITLE", "PixelCast")
 
     # Default values
     DEFAULT_LOCATION = os.getenv("DEFAULT_LOCATION", "San Francisco, CA")

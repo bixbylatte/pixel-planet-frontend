@@ -12,7 +12,7 @@ import requests
 # Streamlit page setup
 # -------------------------------
 st.set_page_config(
-    page_title="Pixelcast",
+    page_title="PixelCast",
     page_icon="🌍",
     layout="wide",
     initial_sidebar_state="expanded"

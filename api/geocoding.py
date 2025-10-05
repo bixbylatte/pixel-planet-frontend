@@ -27,7 +27,7 @@ class GeocodingService:
         self.base_url = "https://nominatim.openstreetmap.org"
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Pixelcast-Weather-App/1.0'
+            'User-Agent': 'Pixelast-Weather-App/1.0'
         })
 
     def search_locations(self, query: str, limit: int = 5) -> List[Location]:
