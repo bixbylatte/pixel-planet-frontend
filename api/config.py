@@ -17,7 +17,7 @@ class Config:
         "API_BASE_URL",
         "https://pixel-planet-api-eixw6uscdq-uc.a.run.app"
     )
-    API_TIMEOUT = int(os.getenv("API_TIMEOUT", "60"))
+    API_TIMEOUT = int(os.getenv("API_TIMEOUT", "180"))
 
     # App Configuration
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"

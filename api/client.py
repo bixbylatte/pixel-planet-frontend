@@ -14,7 +14,7 @@ class WeatherAPIClient:
 
     def __init__(self, base_url: str = "https://pixel-planet-api-eixw6uscdq-uc.a.run.app"):
         self.base_url = base_url.rstrip('/')
-        self.timeout = 60
+        self.timeout = 180
         self.session = requests.Session()
 
     def check_health(self) -> Dict[str, Any]:

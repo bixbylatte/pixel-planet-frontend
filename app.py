@@ -99,6 +99,9 @@ if sidebar_data['assess_clicked']:
                 activity_type=sidebar_data['activity']
             )
 
+            # st.write("Debug: location used ->", location_name)
+
+
             # Parse response
             data = parse_assessment_response(result)
 
