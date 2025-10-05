@@ -4,8 +4,11 @@ Using Nominatim (OpenStreetMap) - free and no API key required
 """
 
 import requests
-from typing import List, Dict, Optional
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
+from .config import config
 
 
 @dataclass
@@ -24,11 +27,35 @@ class GeocodingService:
     """Service for geocoding location names to coordinates"""
 
     def __init__(self):
-        self.base_url = "https://nominatim.openstreetmap.org"
+        self.base_url = config.GEOCODING_BASE_URL.rstrip("/")
+        self.timeout = config.GEOCODING_TIMEOUT
         self.session = requests.Session()
+
+        # Build compliant User-Agent with optional contact email
+        user_agent = config.GEOCODING_USER_AGENT
+        if config.GEOCODING_EMAIL:
+            user_agent = f"{user_agent} ({config.GEOCODING_EMAIL})"
+
         self.session.headers.update({
-            'User-Agent': 'Pixelast-Weather-App/1.0'
+            'User-Agent': user_agent,
+            'Accept': 'application/json'
         })
+
+        # Configure retries for transient failures and 429 rate limits
+        retry = Retry(
+            total=3,
+            backoff_factor=0.8,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["GET"],
+            raise_on_status=False
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
+
+        # track last error/status for UI messaging
+        self.last_status: Optional[int] = None
+        self.last_error: Optional[str] = None
 
     def search_locations(self, query: str, limit: int = 5) -> List[Location]:
         """
@@ -55,8 +82,17 @@ class GeocodingService:
             response = self.session.get(
                 f"{self.base_url}/search",
                 params=params,
-                timeout=10
+                timeout=self.timeout
             )
+            self.last_status = response.status_code
+            if response.status_code == 403:
+                # Likely blocked due to UA/policy; do not raise
+                self.last_error = "Geocoding service blocked (403)."
+                return []
+            if response.status_code == 429:
+                # Rate limited
+                self.last_error = "Rate limited by geocoding service (429). Please wait and try again."
+                return []
             response.raise_for_status()
             results = response.json()
 
@@ -66,13 +102,14 @@ class GeocodingService:
                     display_name=result.get('display_name', ''),
                     latitude=float(result.get('lat', 0)),
                     longitude=float(result.get('lon', 0)),
-                    place_id=result.get('place_id', '')
+                    place_id=str(result.get('place_id', ''))
                 )
                 locations.append(location)
 
             return locations
 
         except Exception as e:
+            self.last_error = str(e)
             print(f"Geocoding error: {e}")
             return []
 

@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime, time, timedelta
 from api.geocoding import GeocodingService
+from api.config import config
 
 
 def render_sidebar():
@@ -217,8 +218,17 @@ def render_sidebar():
                                 del st.session_state.last_query
                             st.rerun()
                 else:
-                    st.warning(
-                        "No locations found. Try a different search term.")
+                    # Provide clearer guidance on possible rate limits/blocks
+                    geo = st.session_state.geocoding_service
+                    if getattr(geo, 'last_status', None) in (403, 429):
+                        msg = "Geocoding is temporarily unavailable ({}). Please wait a minute and try again.".format(geo.last_status)
+                        if geo.last_status == 403:
+                            st.error(msg + " If this persists in deployment, set a contact email via GEOCODING_EMAIL and a descriptive GEOCODING_USER_AGENT.")
+                        else:
+                            st.warning(msg)
+                    else:
+                        st.warning(
+                            "No locations found. Try a different query (e.g., include city and country).")
             else:
                 # Clear search results when query is too short
                 if st.session_state.location_search_results:
