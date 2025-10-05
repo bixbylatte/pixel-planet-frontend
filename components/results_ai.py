@@ -153,7 +153,7 @@ def render_ai_analysis_card(
                         AI Weather Analysis
                     </h2>
                     <p class="text-white/60 text-sm leading-relaxed m-0">
-                        Based on NASA Earth observation data • {location} • {date}
+                        Based on NASA POWER observation data • {location} • {date}
                     </p>
                 </div>
             </div>

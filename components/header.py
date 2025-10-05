@@ -25,7 +25,7 @@ def render_header():
                     Pixelcast
                 </h1>
                 <p class="text-sm text-gray-600 m-0 ml-4 pl-4 border-l border-gray-300">
-                    Powered by NASA Earth Observation Data
+                    Powered by NASA POWER
                 </p>
             </div>
         </div>

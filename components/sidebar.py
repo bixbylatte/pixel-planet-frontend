@@ -252,18 +252,26 @@ def render_sidebar():
         )
 
         st.markdown("**End Date & Time**")
+
+        # end date must be >= start date; suggest +1 day
+        suggested_end = start_date + timedelta(days=1)
+
+        # if there is a prior selection, keep it but clamp to start_date+
+        prev_end = st.session_state.get("end_date_input", suggested_end)
+        end_default = max(prev_end, start_date)
+
         end_date = st.date_input(
             "End Date",
-            value=today,
+            value=end_default,
             format="MM/DD/YYYY",
             label_visibility="collapsed",
             key="end_date_input",
-            min_value=start_date,  # Ensure end date is not before start date
+            min_value=start_date,
         )
 
         end_time = st.time_input(
             "End Time",
-            value=time(17, 0),
+            value=st.session_state.get("end_time_input", time(17, 0)),
             label_visibility="collapsed",
             key="end_time_input",
             step=300
@@ -314,7 +322,7 @@ def render_sidebar():
                 'temperature': True,
                 'precipitation': True,
                 'wind_speed': True,
-                'humidity': False
+                'humidity': True
             }
 
         # Checkboxes for weather metrics
