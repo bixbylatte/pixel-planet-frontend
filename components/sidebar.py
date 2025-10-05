@@ -314,7 +314,7 @@ def render_sidebar():
         # ═══════════════════════════════════════
         # WEATHER METRICS SECTION
         # ═══════════════════════════════════════
-        st.markdown("### Weather Metrics")
+        # st.markdown("### Weather Metrics")
 
         # Initialize session state for checkboxes if not exists
         if 'metrics' not in st.session_state:
@@ -325,36 +325,13 @@ def render_sidebar():
                 'humidity': True
             }
 
-        # Checkboxes for weather metrics
-        temperature_checked = st.checkbox(
-            "Temperature",
-            value=st.session_state.metrics['temperature'],
-            key="temp_checkbox"
-        )
-
-        precipitation_checked = st.checkbox(
-            "Precipitation",
-            value=st.session_state.metrics['precipitation'],
-            key="precip_checkbox"
-        )
-
-        wind_speed_checked = st.checkbox(
-            "Wind Speed",
-            value=st.session_state.metrics['wind_speed'],
-            key="wind_checkbox"
-        )
-
-        humidity_checked = st.checkbox(
-            "Humidity",
-            value=st.session_state.metrics['humidity'],
-            key="humidity_checkbox"
-        )
+        
 
         # Update session state
-        st.session_state.metrics['temperature'] = temperature_checked
-        st.session_state.metrics['precipitation'] = precipitation_checked
-        st.session_state.metrics['wind_speed'] = wind_speed_checked
-        st.session_state.metrics['humidity'] = humidity_checked
+        st.session_state.metrics['temperature'] = True
+        st.session_state.metrics['precipitation'] = True
+        st.session_state.metrics['wind_speed'] = True
+        st.session_state.metrics['humidity'] = True
 
         # ═══════════════════════════════════════
         # ASSESS ACTIVITY BUTTON
