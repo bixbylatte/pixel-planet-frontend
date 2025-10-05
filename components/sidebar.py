@@ -248,7 +248,7 @@ def render_sidebar():
             value=time(9, 0),
             label_visibility="collapsed",
             key="start_time_input",
-            step=300
+            step=3600
         )
 
         st.markdown("**End Date & Time**")
@@ -274,7 +274,7 @@ def render_sidebar():
             value=st.session_state.get("end_time_input", time(17, 0)),
             label_visibility="collapsed",
             key="end_time_input",
-            step=300
+            step=3600
         )
 
         # ═══════════════════════════════════════
